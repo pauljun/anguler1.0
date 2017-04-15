@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<base href="?">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+	<title>订单详情</title>
+</head>
+<body ng-app="order" ng-controller="order">
+	<header class="g-header">
+		<a class="logo fl" href="http://m.smartlifein.com/">
+			<img src="http://m.smartlifein.com/statics/images/mobile/logo.png" alt="智慧生活">
+		</a>
+		<span class="u-header_tlt">团购</span>
+		<a class="fr nav_href" href="http://m.smartlifein.com/navigation.html"></a>
+		<a class="fr search_href" href="http://m.smartlifein.com/search/"></a>
+	</header>
+	
+	<nav class="search_bar">
+		<a href="javascript:window.history.go(-1);"></a>
+		<h3>填写订单</h3>
+	</nav>	
+    <form name="form" id="form" method="post" novalidate="novalidate" ng-submit="orderSub(form.$valid)">
+        <section class="m-order">
+            <div class="m-detail_content">
+                <div class="dl">
+                    <div class="dt">
+                        <a href="">
+                            <img ng-src="{{propic}}" alt="">
+                        </a>
+                    </div>
+                    <div class="dd">
+                        <h3><a href="">{{proname}}({{proformat}})</a></h3>
+                        <em>{{proprice}}元×{{url.num}}</em>
+                        <h4>&#65509;{{proprice*url.num}}</h4>
+                        <h5>由{{company}}厂商提供</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-order_list">      
+                <ul>
+                    <li>
+                        收件人：<input type="text" name="username" ng-model="username" ng-minlength="2" ng-maxlength="5" ng-focus="formName = false">
+
+                        <span class="u-error" ng-show="formName">请输入收件人姓名。</span>
+                        <span class="u-error" ng-show="form.username.$dirty && form.username.$invalid">收件人姓名长度2-5位。</span>
+                    </li>
+                    <li>
+                        收件人手机号：<input type="text" name="telphone"  ng-model="telphone" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9]|17[0-9])\d{8}$/" ng-focus="formTelphone = false">
+
+                        <span class="u-error" ng-show="formTelphone">请输入手机号码。</span>
+                        <span class="u-error" ng-show="form.telphone.$dirty && form.telphone.$invalid">请输入正确的手机号码。</span>
+                    </li>
+                    <li>
+                        收货地址：<input type="text" name="address" ng-model="address" ng-maxlength="200" ng-minlength="5" ng-focus="formAddr = false">
+                        <span class="u-error" ng-show="form.address.$dirty && form.address.$invalid">
+                            请输入正确的收货地址。
+                        </span>
+                        <span class="u-error" ng-show="formAddr">请输入收货地址。</span>
+                    </li>
+                    <li>
+                        快捷下单验证：
+                        <div class="m-phone">
+                            <input type="text" name="mobile" ng-pattern="/^(13[0-9]|14[0-9]|15[0-9]|18[0-9]|17[0-9])\d{8}$/" placeholder="填写快捷下单所需验证的手机号"  ng-model="mobile" ng-focus="formMobile = false">
+                            <span ng-click="sendPass()">获取验证码</span>
+                            <p class="u-error" ng-show="form.mobile.$dirty && form.mobile.$invalid">
+                                请输入正确的手机号码格式。
+                            </p>
+                            <p class="u-error" ng-show="formMobile">请输入手机号码。</p>
+                        </div>
+                        <div class="m-phone">
+                            <input type="text" name="pass" placeholder="输入收到的短信验证码" ng-minlength="4" ng-maxlength="6"  ng-model="pass" ng-focus="formPass = false;passWrong = false;">
+                            <p class="u-error" ng-show="form.pass.$dirty && form.pass.$invalid">
+                                您输入的验证码格式不正确。
+                            </p>
+                            <p class="u-error" ng-show="formPass">请输入验证码。</p>
+                            <p class="u-error" ng-show="passWrong">验证码错误。</p>
+                        </div>
+                    </li>
+                    <li>
+                        发票信息：
+                        <div class="fr m-fp_mes">
+                            发票：
+                            <label ng-click="billSelect()" ng-if="need == 1">不需要</label>
+                            <label ng-click="billSelect()" ng-if="need == 2">需要</label>
+                            <em></em>
+                        </div>
+                    </li>
+                    <li>
+                        备注：<textarea name="uremark" id="" cols="30" rows="10" ng-model="uremark"></textarea>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="u-gray"></div>
+
+            <div class="m-order_list">
+                <ul>
+                    <li>
+                        支付方式
+                    </li>
+                    <li  ng-click="paytype = 4">
+                        <div class="dl">
+                            <div class="dt u-wx"></div>
+                            <div class="dd">
+                                <h3>微信支付</h3>
+                                <p>推荐安装微信5.0及以上版本的用户使用</p>
+                            </div>
+                            <span ng-class="paytype == 4?'active':''"></span>
+                        </div>
+                    </li>
+                    <li  ng-click="paytype = 3">
+                        <div class="dl">
+                            <div class="dt u-ap"></div>
+                            <div class="dd">
+                                <h3>支付宝支付</h3>
+                                <p>推荐有支付宝帐号的用户使用</p>
+                            </div>
+                            <span ng-class="paytype == 3?'active':''"></span>
+                        </div>
+                    </li>
+                </ul>
+
+<!--                <div class="u-order_submit" ng-click="orderSub()">提交订单</div>-->
+                <button class="u-order_submit" type="submit">提交订单</button>
+        </section>
+        
+        <input type="hidden" name="paytype" ng-value="paytype">
+        <input type="hidden" name="proid" ng-value="proid">
+        <input type="hidden" name="proname" ng-value="proname">
+        <input type="hidden" name="propic" ng-value="propic">
+        <input type="hidden" name="prourl" ng-value="prourl">
+        <input type="hidden" name="proformat" ng-value="proformat">
+        <input type="hidden" name="pronum" ng-value="pronum">
+        <input type="hidden" name="proprice" ng-value="proprice">
+        <input type="hidden" name="invoice" ng-value="invoice">
+        <input type="hidden" name="company" ng-value="company">
+    </form>
+    <!--发票弹窗-->
+    <div class="m-invoice_pop" ng-show="showDia">
+        <div class="m-invoice_dia">
+            <span class="u-close" ng-click="closeDia()"></span>
+            <h2>发票信息</h2>
+            <div class="u-pd30">
+                <h5>发票类型</h5>
+                <div class="m-invoice_need u-bd">
+                    <span ng-class="need == 1?'active':''" ng-click="need=1">不需要</span>
+                    <span ng-class="need == 2?'active':''" ng-click="need=2">需要</span>
+                </div>
+
+                <h5>发票抬头<span>可输入个人/单位名称</span></h5>
+
+                <div class="u-grounp">
+                    <input type="text" value="个人" ng-model="invocontent" ng-focus="invoiceError = false">
+                    <p class="u-error" ng-show="invoiceError">请输入个人或者单位名称。</p>
+                </div>
+            </div>
+
+            <div class="u-gray"></div>
+
+            <div class="u-pd30">
+                <h5 class="u-bd">发票内容</h5>
+                <h5>非图书商品</h5>
+                <ul class="m-form_radio">
+                    <li>
+                        <input type="radio" ng-model="invo_index" name="words" id="s1" hidden="" value="0">
+                        <label for="s1" ng-class="invo_index == 0?'active':''"></label>
+                        明细
+                    </li>
+                    <li>
+                        <input type="radio" ng-model="invo_index" name="words" id="s2" hidden value="1">
+                        <label for="s2" ng-class="invo_index == 1?'active':''"></label>
+                        耗材
+                    </li>
+                    <li>
+                        <input type="radio" ng-model="invo_index" name="words" id="s3" hidden value="2">
+                        <label for="s3" ng-class="invo_index == 2?'active':''"></label>
+                        电脑配件
+                    </li>
+                    <li>
+                        <input type="radio" ng-model="invo_index" name="words" id="s4" hidden value="3">
+                        <label for="s4" ng-class="invo_index == 3?'active':''"></label>
+                        办公用品（附购物清单）
+                    </li>
+                </ul>
+                <div class="u-order_submit" ng-click="subNeed()">确定</div>
+            </div>
+        </div>
+    </div>
+    
+    
+	<footer class="g-footer">
+		<div class="footer_nav">
+			<a href="http://m.smartlifein.com/navigation.html">导航</a>
+			<a href="http://m.smartlifein.com/aboutus.html">关于我们</a>
+			<a href="http://m.smartlifein.com/aboutus.html?do=tougao">投稿</a>
+			<a href="http://m.smartlifein.com/report.html">反馈</a>
+		</div>
+		<p>智慧生活网 (粤ICP备06087881号-17)</p>
+	</footer>
+	<script src="js/angular1-4-6.min.js"></script>
+	<script src="js/fill_order.js"></script>
+</body>
+</html>

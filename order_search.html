@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+	<title>订单详情</title>
+</head>
+<body ng-app="detail">
+	<header class="g-header">
+		<a class="logo fl" href="http://m.smartlifein.com/">
+			<img src="http://m.smartlifein.com/statics/images/mobile/logo.png" alt="智慧生活">
+		</a>
+		<span class="u-header_tlt">团购</span>
+		<a class="fr nav_href" href="http://m.smartlifein.com/navigation.html"></a>
+		<a class="fr search_href" href="http://m.smartlifein.com/search/"></a>
+	</header>
+	
+	<nav class="search_bar">
+		<a href="javascript:window.history.go(-1);"></a>
+		<h3>订单查询</h3>
+	</nav>	
+
+    <section class="m-search" ng-controller="detail">
+        <p>您可以通过手机号快速查询订单</p>
+        <h4>请输入快捷下单的手机号：</h4>
+        <div class="m-search_form">
+            <input type="text" name="mobile" ng-model="mobile" ng-focus="mobileFomat = false">
+            <span ng-click="search()">查询</span>
+            <p class="red" ng-show="mobileFomat" ng-bind="text"></p>
+        </div>
+        <div class="u-no_order" ng-show="orderNum">当前手机号没有订单。</div>
+        <div class="u-contact">客服热线：+86-755-83279360</div>
+    </section>
+    
+	<footer class="g-footer">
+		<div class="footer_nav">
+			<a href="http://m.smartlifein.com/navigation.html">导航</a>
+			<a href="http://m.smartlifein.com/aboutus.html">关于我们</a>
+			<a href="http://m.smartlifein.com/aboutus.html?do=tougao">投稿</a>
+			<a href="http://m.smartlifein.com/report.html">反馈</a>
+		</div>
+		<p>智慧生活网 (粤ICP备06087881号-17)</p>
+	</footer>
+    
+    <script src="js/angular1-4-6.min.js"></script>
+    <script>
+        (function(){
+            var detail = angular.module('detail',[])
+            detail.controller('detail',function($scope,$http){
+                $scope.text = "请输入手机号。";
+                $scope.mobile = "";
+                $scope.search = function(){
+                    var rex = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9]|17[0-9])\d{8}$/;
+                    var url = "http://www.smartlifein.com/index.php?m=order&c=index&a=ajax_search_order&mobile=";
+                    if($scope.mobile == ""){
+                        $scope.text = "请输入手机号。"
+                        $scope.mobileFomat = true;
+                        return ;
+                    };
+
+                    if(!rex.test($scope.mobile)){
+                        $scope.text = "手机号码格式不正确。"
+                        $scope.mobileFomat = true;
+                        return ;
+                    };
+                    
+                    $http.get(url+$scope.mobile).success(function(res){
+                        if(res.code == 1){
+                            if(res.data.length == 0){
+                                $scope.orderNum = true
+                            }else{
+                                location.href = "detail.html?mobile="+$scope.mobile;
+                            };
+                        }
+                    });
+                };
+            });
+        })();
+    </script>
+</body>
+</html>

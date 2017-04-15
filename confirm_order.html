@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+	<title>订单详情</title>
+</head>
+<body ng-app="order" ng-controller="order">
+	<header class="g-header">
+		<a class="logo fl" href="http://m.smartlifein.com/">
+			<img src="http://m.smartlifein.com/statics/images/mobile/logo.png" alt="智慧生活">
+		</a>
+		<span class="u-header_tlt">团购</span>
+		<a class="fr nav_href" href="http://m.smartlifein.com/navigation.html"></a>
+		<a class="fr search_href" href="http://m.smartlifein.com/search/"></a>
+	</header>
+	
+	<nav class="search_bar">
+		<a href="javascript:window.history.go(-1);"></a>
+		<h3>确认订单</h3>
+	</nav>	
+
+    <section class="m-order">
+        <div class="m-detail_content">
+            <div class="dl">
+                <div class="dt">
+                    <a href="">
+                        <img ng-src="{{prourl}}" alt="">
+                    </a>
+                </div>
+                <div class="dd">
+                    <h3><a href="">{{proname}}({{proformat}})</a></h3>
+                    <em>{{proprice}}元×{{url.num}}</em>
+                    <h4>&#65509;{{proprice*url.num}}</h4>
+                    <h5>由{{company}}厂商提供</h5>
+                </div>
+            </div>
+        </div>
+        
+        <div class="m-order_list">
+            <ul>
+                <li>
+                    收件人：<span>徐某某</span>
+                </li>
+                <li>
+                    收件人手机号：<span>13333333333</span>
+                </li>
+                <li>
+                    详细地址：<span>深圳市南山区</span>
+                </li>
+                <li class="clearfix">
+                    发票信息：<span class="fr">发票：个人<br>非图书商品-明细</span>
+                </li>
+                <li>
+                    添加备注：<span>尽快发货</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="u-gray"></div>
+        
+        <div class="m-order_list">
+            <ul>
+                <li>
+                    支付方式
+                </li>
+                <li>
+                    <div class="dl">
+                        <div class="dt u-wx"></div>
+                        <div class="dd">
+                            <h3>微信支付</h3>
+                            <p>推荐安装微信5.0及以上版本的用户使用</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            
+            <div class="u-order_submit">确认支付</div>
+        </div>
+    </section>
+    
+	<footer class="g-footer">
+		<div class="footer_nav">
+			<a href="http://m.smartlifein.com/navigation.html">导航</a>
+			<a href="http://m.smartlifein.com/aboutus.html">关于我们</a>
+			<a href="http://m.smartlifein.com/aboutus.html?do=tougao">投稿</a>
+			<a href="http://m.smartlifein.com/report.html">反馈</a>
+		</div>
+		<p>智慧生活网 (粤ICP备06087881号-17)</p>
+	</footer>
+	
+	<script src="js/angular1-4-6.min.js"></script>
+	<script src="js/confirm_order.js"></script>
+</body>
+</html>

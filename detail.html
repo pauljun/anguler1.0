@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<base href="?">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+	<title>订单详情</title>
+</head>
+<body ng-app="detail">
+	<header class="g-header">
+		<a class="logo fl" href="http://m.smartlifein.com/">
+			<img src="http://m.smartlifein.com/statics/images/mobile/logo.png" alt="智慧生活">
+		</a>
+		<span class="u-header_tlt">团购</span>
+		<a class="fr nav_href" href="http://m.smartlifein.com/navigation.html"></a>
+		<a class="fr search_href" href="http://m.smartlifein.com/search/"></a>
+	</header>
+	
+	<nav class="search_bar">
+		<a href="javascript:window.history.go(-1);"></a>
+		<h3>订单详情</h3>
+	</nav>	
+
+	<section class="m-detail" ng-controller="detail">
+		<p class="u-order_num">
+			<span ng-bind="mobile"></span> 的订单：
+		</p>
+		
+		<ul class="clearfix m-detail_tab">
+			<li ng-repeat="(key,value) in list" ng-click="liclick(key)">
+				<span ng-class="index == key ?'active':''" ng-bind="value.proname"></span>
+			</li>
+		</ul>
+		
+		<div class="u-gray"></div>
+		
+		<div class="m-detail_container ng-hide" ng-repeat="(key,value) in list" ng-show="index == key">
+			<div class="list">
+				订单详情
+			</div>
+			<div class="list">
+				<p ng-if="value.logistics">物流信息：{{value.logistics}}</p>
+				<p ng-if="!value.logistics">物流信息：暂无物流信息</p>
+				<p ng-if="value.logistics">
+                    承运快递：{{value.lgcompany}} ，快递单号：{{value.lgcode}}
+				    <span class="u-cor999">（刚下单或是没有发货的时候不显示）</span>
+				</p>
+			</div>
+			<div class="list">
+				<p>收货人：<span class="u-cor999" ng-bind="value.username"></span></p>
+				<p>手机号：<span class="u-cor999" ng-bind="value.telphone"></span></p>
+				<p>收货地址：<span class="u-cor999" ng-bind="value.address"></span></p>
+				<p>备注：<span class="u-cor999" ng-bind="value.uremark"></span></p>
+			</div>
+			<div class="list m-detail_content">
+                <div class="dl">
+                    <div class="dt">
+                        <a href="">
+                            <img ng-src="{{value.propic}}" alt="">
+                        </a>
+                    </div>
+                    <div class="dd">
+                        <h3><a href="">{{value.proname}}({{value.proformat}})</a></h3>
+                        <em>{{value.proprice}}元×{{value.pronum}}</em>
+                        <h4>&#65509;{{value.total}}</h4>
+                        <h5>由{{value.company}}提供</h5>
+                    </div>
+                    <p>成交时间：{{value.addtime*1000 |date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                </div>
+			</div>
+		</div>
+		
+        <div class="u-contact">客服热线：+86-755-83279360</div>
+	</section>
+
+	<footer class="g-footer">
+		<div class="footer_nav">
+			<a href="http://m.smartlifein.com/navigation.html">导航</a>
+			<a href="http://m.smartlifein.com/aboutus.html">关于我们</a>
+			<a href="http://m.smartlifein.com/aboutus.html?do=tougao">投稿</a>
+			<a href="http://m.smartlifein.com/report.html">反馈</a>
+		</div>
+		<p>智慧生活网 (粤ICP备06087881号-17)</p>
+	</footer>
+	
+	<script src="js/angular1-4-6.min.js"></script>
+	<script src="js/detail.js"></script>
+</body>
+</html>
